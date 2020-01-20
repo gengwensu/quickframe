@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,26 +28,31 @@ public class QFServiceImpl implements QFService {
 
     @Override
     public List<QFWithDates> populateAndGet() {
-        log.info("Count is " + withDatesRepository.count());
+        /*log.info("Count is " + withDatesRepository.count());*/
         if (withDatesRepository.count() == 0) {//Empty table, populate
-            log.info("Inside populate");
+            /*log.info("Inside populate");*/
             List<QuickFrame> qfList = quickframeRepository.findAll();
-            log.info("After findAll");
+            /*log.info("After findAll");*/
             List<QFWithDates> qfWithDatesList = qfList.stream()
-                    .map(e -> new QFWithDates(
-                            e.getObjectId(),
-                            e.getObjectNumber(),
-                            e.getObjectDate(),
-                            e.getClassification(),
-                            e.parseObjectDate()[0],
-                            e.parseObjectDate()[1]))
+                    .map(e -> {
+                        Integer[] temp = e.parseObjectDate();
+                        /*log.info("e is " + e.toString());
+                        log.info("temp is " + Arrays.toString(temp));*/
+                        return new QFWithDates(
+                                e.getObjectId(),
+                                e.getObjectNumber(),
+                                e.getObjectDate(),
+                                e.getClassification(),
+                                temp[0],
+                                temp[1]);
+                    })
                     .collect(Collectors.toList());
-            log.info("before saveAll");
+            /*log.info("before saveAll");*/
             withDatesRepository.saveAll(qfWithDatesList);
         }
-        log.info("After saveAll");
+        /*log.info("After saveAll");*/
         List<QFWithDates> result = withDatesRepository.findAll();
-        log.info("After withDatesRepository.findAll");
+        /*log.info("After withDatesRepository.findAll");*/
         return result;
     }
 
