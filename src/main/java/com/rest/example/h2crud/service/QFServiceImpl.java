@@ -1,7 +1,6 @@
 package com.rest.example.h2crud.service;
 
-import com.rest.example.h2crud.controller.QFController;
-import com.rest.example.h2crud.model.ClassicationCount;
+import com.rest.example.h2crud.model.ClassCount;
 import com.rest.example.h2crud.model.QFWithDates;
 import com.rest.example.h2crud.model.QuickFrame;
 import com.rest.example.h2crud.repository.QFRepository;
@@ -12,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,8 +54,10 @@ public class QFServiceImpl implements QFService {
     }
 
     @Override
-    public List<ClassicationCount> getCountByClassification() {
-        List<ClassicationCount> result = qfRepository.findAll();
+    public List<ClassCount> getCountByClassification() {
+        List<ClassCount> result = quickframeRepository.groupByStats();
+        log.info("groupByStats result: ");
+        result.stream().forEach(e -> log.info(e.getClassification() + " " + e.getTotal()));
         return result;
     }
 }
