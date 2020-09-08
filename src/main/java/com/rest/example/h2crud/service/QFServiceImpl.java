@@ -3,7 +3,6 @@ package com.rest.example.h2crud.service;
 import com.rest.example.h2crud.model.ClassCount;
 import com.rest.example.h2crud.model.QFWithDates;
 import com.rest.example.h2crud.model.QuickFrame;
-import com.rest.example.h2crud.repository.QFRepository;
 import com.rest.example.h2crud.repository.QuickframeRepository;
 import com.rest.example.h2crud.repository.WithDatesRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 public class QFServiceImpl implements QFService {
     public static final Logger log = LoggerFactory.getLogger(QFServiceImpl.class);
 
-    private final QFRepository qfRepository;
     private final WithDatesRepository withDatesRepository;
     private final QuickframeRepository quickframeRepository;
 
